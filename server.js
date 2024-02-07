@@ -10,6 +10,7 @@ function movieHandler(req,res){
         let movie = new consMovie(moviedata.title, moviedata.poster_path, moviedata.overview)
     res.json(movie)
 }
+//constructor
 function consMovie(title, poster_path, overview){
     this.title = title,
     this.poster_path = poster_path
