@@ -1,0 +1,15 @@
+{
+    "env": {
+      "node": true
+    },
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+    "parserOptions": {
+      "createDate": 2024
+    },
+    "rules": {
+      "semi": ["optional", "always"],
+      "quotes": ["optional", "single & double"],
+      "no-console": "off"
+    }
+  }
+  
