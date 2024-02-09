@@ -3,7 +3,7 @@
 **Author Name** : *Makarem Abu Sosain*
 
 ## WRRC
-![WRRC pic](/home/makarem/Movies-Library/Screenshot 2024-01-31 201503.jpeg)
+![WRRC pic](wrrc.jpeg)
 
 ## Overview
 *check the latest movies based on categories app.*
