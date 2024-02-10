@@ -19,4 +19,4 @@
 *I created get request to return all the data from the DB*
 
 ## Project Features
-*An easy-to-use application suitable for those who like movies*
+*An easy-to-use web application suitable for those who like movies*
