@@ -24,27 +24,19 @@ app.get('/popular',popularHandler)
 app.get('/upcoming',upcomingHandler)
 app.post('/addMovie',addMovieHandler)
 app.get('/getMovies',getMoviesHandlers)
+app.put('/UPDATE/:id', updateHandler)
+app.delete('/DELETE/:id', deleteHandler)
+app.get('/getMovie/:id',getMovieHandler)
+
 //handlers
 function movieHandler(req,res){
-        let movie = new consMovie(moviedata.title, moviedata.poster_path, moviedata.overview)
+        let movie = new ConsMovie(moviedata.title, moviedata.poster_path, moviedata.overview)
     res.json(movie)
-}
-function consMovie(title, poster_path, overview){
-    this.title = title,
-    this.poster_path = poster_path
-    this.overview = overview
 }
 function favoriteHandler(req,res){
     res.send("welcome to favorite page")
     
 }
-app.use((req, res, next) => {
-    res.status(404).send("page not found")
-});
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send("Sorry, something went wrong")
-    });
  function trendingHandler(req,res){
         //axios.get(url).then().catch()
         let url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}&language=en-US`
@@ -65,7 +57,7 @@ app.use((err, req, res, next) => {
             console.log(error)
             res.status(500).send('Internal Server Error');
         })
-        }
+}
 function popularHandler(req,res){
     let url = `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=en-US&page=1`
     axios.get(url)
@@ -131,6 +123,36 @@ function getMoviesHandlers(req,res){
     })
     .catch()
 }
+function updateHandler(req,res){
+    let moviecatch = req.params.id;
+    let {Name, Time, MovieType} = req.body;
+    let sql = `UPDATE movies
+    SET Name = $1, Time = $2, MovieType = $3
+    WHERE id = $4;`;
+    let values = [Name, Time, MovieType,moviecatch];
+    client.query(sql, values).then(result=>{
+        res.send("successfuly updated")
+
+    }).catch()
+}
+function deleteHandler(req,res){
+    let {id} = req.params;
+    let sql=`DELETE FROM movies WHERE id = $1 ;`;
+    let values = [id];
+    client.query(sql, values).then(result=>{
+        res.send("successfuly deleted")
+    }).catch()
+}
+function getMovieHandler(req,res){
+    let {id} = req.params;
+    let sql=`SELECT * FROM movies WHERE id = $1 ;`;
+    let values = [id];
+    client.query(sql, values).then(result=>{
+        const movieData=result.rows
+        res.json(movieData)
+    }).catch() 
+}
+
  //constructors
         function Reshape(id, title,date,path,overview){
             this.id = id;
@@ -145,6 +167,20 @@ function getMoviesHandlers(req,res){
             this.original_name = original_name;
             this.overview = overview;
         }
+        function ConsMovie(title, poster_path, overview){
+            this.title = title,
+            this.poster_path = poster_path
+            this.overview = overview
+        }
+
+//errors
+app.use((req, res, next) => {
+    res.status(404).send("page not found")
+});
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("Sorry, something went wrong")
+    });
 
 //listener
 client.connect().then(()=>{
