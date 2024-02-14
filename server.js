@@ -11,7 +11,8 @@ app.use(bodyParser.json())
 const axios = require('axios');
 const cors = require('cors');
 const { Client } =  require('pg')
-const url =`postgres://makarem:0000@localhost:5432/movie`
+// const url =`postgres://makarem:0000@localhost:5432/movie`
+const url=process.env.DB_URL
 const client = new Client(url)
 
 //routes
