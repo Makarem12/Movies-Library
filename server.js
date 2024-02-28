@@ -106,17 +106,17 @@ function searchHandler(req,res){
 }
 function addMovieHandler(req,res){
     console.log(req.body)
-    const { Name, Time, MovieType }= req.body
-    const  sql = `INSERT INTO movies(Name, Time, MovieType)
-    VALUES ($1,$2,$3) RETURNING *;`
-    const values = [Name, Time, MovieType] 
+    const { title, date, path, overview, comment}= req.body
+    const  sql = `INSERT INTO movieTable(title, date, path, overview, comment)
+    VALUES ($1,$2,$3,$4,$5) RETURNING *;`
+    const values = [title, date, path, overview, comment] 
     client.query(sql, values).then((result)=>{
         console.log(result.rows)
         res.status(201).json(result.rows)
     }).catch()
 }
 function getMoviesHandlers(req,res){
-    const sql = `SELECT * FROM movies;`
+    const sql = `SELECT * FROM movieTable;`
     client.query(sql).then((result)=>{
         const data = result.rows
         res.json(data)
@@ -126,11 +126,11 @@ function getMoviesHandlers(req,res){
 }
 function updateHandler(req,res){
     let moviecatch = req.params.id;
-    let {Name, Time, MovieType} = req.body;
-    let sql = `UPDATE movies
-    SET Name = $1, Time = $2, MovieType = $3
-    WHERE id = $4;`;
-    let values = [Name, Time, MovieType,moviecatch];
+    let {title, date, path, overview, comment} = req.body;
+    let sql = `UPDATE movieTable
+    SET title = $1, date = $2, path = $3, overview = $4, comment = $5
+    WHERE id = $6;`;
+    let values = [title, date, path, overview, comment, moviecatch];
     client.query(sql, values).then(result=>{
         res.send("successfuly updated")
 
@@ -138,7 +138,7 @@ function updateHandler(req,res){
 }
 function deleteHandler(req,res){
     let {id} = req.params;
-    let sql=`DELETE FROM movies WHERE id = $1 ;`;
+    let sql=`DELETE FROM movieTable WHERE id = $1 ;`;
     let values = [id];
     client.query(sql, values).then(result=>{
         res.send("successfuly deleted")
@@ -146,7 +146,7 @@ function deleteHandler(req,res){
 }
 function getMovieHandler(req,res){
     let {id} = req.params;
-    let sql=`SELECT * FROM movies WHERE id = $1 ;`;
+    let sql=`SELECT * FROM movieTable WHERE id = $1 ;`;
     let values = [id];
     client.query(sql, values).then(result=>{
         const movieData=result.rows

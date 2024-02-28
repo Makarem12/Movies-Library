@@ -1,6 +1,8 @@
-CREATE TABLE movies (
+CREATE TABLE movieTable (
     id SERIAL PRIMARY KEY,
-    Name VARCHAR(255),
-    Time VARCHAR(255),
-    MovieType VARCHAR(255)
+    title VARCHAR(255),
+    date VARCHAR(255),
+    path TEXT,
+    overview TEXT,
+    comment VARCHAR(255)
 );
